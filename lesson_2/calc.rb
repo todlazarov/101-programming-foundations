@@ -12,7 +12,7 @@ action = Kernel.gets().chomp()
 
 # Output
 if action.downcase() == "add"
-	Kernel.puts("The result is... #{num1 + num2}")
+  Kernel.puts("The result is... #{num1 + num2}")
 elsif action.downcase()	== "subtract"
 	Kernel.puts("The result is... #{num1 - num2}")
 elsif action.downcase() == "multiply"
