@@ -14,11 +14,11 @@ action = Kernel.gets().chomp()
 if action.downcase() == "add"
   Kernel.puts("The result is... #{num1 + num2}")
 elsif action.downcase()	== "subtract"
-	Kernel.puts("The result is... #{num1 - num2}")
+  Kernel.puts("The result is... #{num1 - num2}")
 elsif action.downcase() == "multiply"
-	Kernel.puts("The result is... #{num1 * num2}")
+  Kernel.puts("The result is... #{num1 * num2}")
 elsif action.downcase() == "divide"
-	Kernel.puts("The result is... #{num1 / num2}")
+  Kernel.puts("The result is... #{num1 / num2}")
 else
   Kernel.puts("Incorrect action.")
 end
