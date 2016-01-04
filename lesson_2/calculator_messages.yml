@@ -1,0 +1,10 @@
+# calculator_messages.yml
+
+welcome: "Welcome! This is a command line calculator! Enter your name:"
+valid_name: "Make sure to use a valid name."
+enter_number: "Please enter the first number"
+not_valid_number: "That doesn't look like a valid number"
+second_number: "Please enter the second number"
+must_choose: "Must choose 1, 2, 3 or 4"
+repeat: "Do you want to perform another calculation? (Y to calculate again)"
+thank_you: "Thank you for using the calculator. Good bye!"

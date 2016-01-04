@@ -1,12 +1,23 @@
 # This is the refactored version of the calculator app after the suggestions.
 
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 # Methods
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
-def valid_number?(num)
-  num.to_i() != 0
+def number?(input)
+  integer?(input) || float?(input)
+end
+
+def float?(input)
+  input.to_f.to_s == input
+end
+
+def integer?(input)
+  input.to_i.to_s == input
 end
 
 def operation_to_message(op)
@@ -23,13 +34,13 @@ def operation_to_message(op)
 end
 
 # Input
-prompt("This is a simple command line calculator! Enter your name:")
+prompt(MESSAGES['welcome'])
 
 name = ''
 loop do
   name = Kernel.gets().chomp()
   if name.empty?()
-    prompt("Make sure to use a valied name.")
+    prompt(MESSAGES['valid_name'])
   else
     break
   end
@@ -44,24 +55,24 @@ loop do # Main loop
   operator = ''
 
   loop do
-    prompt("Please enter the first number")
+    prompt(MESSAGES['enter_number'])
     num1 = Kernel.gets().chomp()
 
-    if valid_number?(num1)
+    if number?(num1)
       break
     else
-      prompt("That doesn't look like a valid number")
+      prompt(MESSAGES['not_valid_number'])
     end
   end
 
   loop do
-    prompt("Please enter the second number")
+    prompt(MESSAGES['second_number'])
     num2 = Kernel.gets().chomp()
 
-    if valid_number?(num1)
+    if number?(num1)
       break
     else
-      prompt("That doesn't look like a valid number")
+      prompt(MESSAGES['not_valid_number'])
     end
   end
 
@@ -81,7 +92,7 @@ loop do # Main loop
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt("Must choose 1, 2, 3 or 4")
+      prompt(MESSAGES['must_choose'])
     end
   end
 
@@ -94,18 +105,18 @@ loop do # Main loop
            when '2', 'subtract'
              num1.to_i() - num2.to_i()
            when '3', 'multiply'
-             num1.to_f() + num2.to_f()
+             num1.to_f() * num2.to_f()
            when '4', 'divide'
-             num1.to_i() + num2.to_i()
+             num1.to_f() + num2.to_f()
            end
 
-  prompt("The results is... #{result}")
+  prompt("The result is... #{result}")
 
   # Loop check
-  prompt("Do you want to perform another calculation? (Y to calculate again)")
+  prompt(MESSAGES['repeat'])
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
   prompt("-----------------")
 end
 
-prompt("Thank for using the calculator. Good bye!")
+prompt(MESSAGES['thank_you'])
