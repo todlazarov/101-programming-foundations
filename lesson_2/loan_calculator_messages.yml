@@ -1,0 +1,12 @@
+# Messages for loan_calculator.rb
+
+hello: "Hello! This is a Mortgage/Car Loan Calculator"
+description: "It helps figure out the monthly payments"
+name: "What is your name?"
+valid_name: "Please enter a valid name:"
+total_amount: "Please enter the total mortgage/car loan amount(without commas):"
+valid_number: "Please enter a valid number..."
+APR: "Please enter the Annual Percentage Rate(APR) as a percentage(Ex. 6%)"
+loan_duration: "Please enter the loan duration in years"
+repeat: "Would you like to make another calculation? (Type y for yes)"
+break: "----------------------------------------------"
