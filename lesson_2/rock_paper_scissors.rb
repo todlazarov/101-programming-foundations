@@ -1,17 +1,21 @@
-VALID_CHOICES = %w(rock paper scissors)
+VALID_CHOICES = %w(rock paper scissors lizard spock)
 
 def prompt(message)
   puts("=> #{message}")
 end
 
+def win?(first, second)
+  (first == "rock" && (second == "scissors" || second == "lizard")) ||
+    (first == "paper" && (second == "rock" || second == "spock")) ||
+    (first == "scissors" && (second == "paper" || second == "lizard")) ||
+    (first == "lizard" && (second == "spock" || second == "paper")) ||
+    (first == "spock" && (second == "scissors" || second == "rock"))
+end
+
 def display_results(player_choice, computer_choice)
-  if (player_choice == "rock" && computer_choice == "scissors") ||
-     (player_choice == "paper" && computer_choice == "rock") ||
-     (player_choice == "scissors" && computer_choice == "paper")
+  if win?(player_choice, computer_choice)
     prompt("You win!")
-  elsif (player_choice == "rock" && computer_choice == "paper") ||
-        (player_choice == "paper" && computer_choice == "scissors") ||
-        (player_choice == "scissors" && computer_choice == "rock")
+  elsif win?(computer_choice, player_choice)
     prompt("Computer wins!")
   else
     prompt("It's a tie!")
@@ -23,10 +27,7 @@ player_choice = ''
 prompt("Welcome to our Rock, Paper, Scissors game!")
 
 loop do
-  prompt("Choose an option by typing out word:")
-  prompt("1. Rock")
-  prompt("2. Paper")
-  prompt("3. Scissors")
+  prompt("Choose an option by typing out word: #{VALID_CHOICES.join(', ')}")
 
   loop do
     player_choice = gets.chomp.downcase
