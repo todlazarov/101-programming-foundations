@@ -3,6 +3,7 @@ VALID_CHOICES = %w(rock paper scissors lizard spock)
 VALID_ABRV = %w(r p sc l sp)
 
 # Variables
+choice = ''
 player_choice = ''
 
 # Methods
@@ -28,8 +29,8 @@ def display_results(player_choice, computer_choice)
   end
 end
 
-def abrv_to_full_word(player_choice)
-  case player_choice
+def abrv_to_full_word(word)
+  case word
   when "r"
     player_choice = "rock"
   when "p"
@@ -50,8 +51,8 @@ loop do
   prompt("You can type in the first letter only(HINT: sc for scissors and sp for spock)")
 
   loop do
-    player_choice = gets.chomp.downcase
-    if VALID_CHOICES.include?(player_choice) || VALID_ABRV.include?(player_choice)
+    choice = gets.chomp.downcase
+    if VALID_CHOICES.include?(choice) || VALID_ABRV.include?(choice)
       break
     else
       prompt("Please enter a valid choice")
@@ -59,7 +60,7 @@ loop do
   end
 
   computer_choice = VALID_CHOICES.sample
-  abrv_to_full_word(player_choice)
+  player_choice = abrv_to_full_word(choice)
 
   prompt("You selected #{player_choice}.")
   prompt("The computer selecter #{computer_choice}.")
