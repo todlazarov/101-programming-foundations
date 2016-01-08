@@ -31,7 +31,7 @@ def results(array, choice_1, choice_2)
   end
 end
 
-def score_tracker(array,num)
+def score_tracker(array, num)
   if num == 0
     array[0] += 1
   elsif num == 1
@@ -57,7 +57,7 @@ def abrv_to_full_word(word)
     word << "izard"
   when "sp"
     word << "ock"
-  end 
+  end
 end
 
 # Main Logic
@@ -79,7 +79,7 @@ loop do
   end
 
   # Check in case the short version is used
-  if VALID_ABRV.include?(choice)  
+  if VALID_ABRV.include?(choice)
     player_choice = abrv_to_full_word(choice)
   else
     player_choice = choice
@@ -102,13 +102,13 @@ loop do
     prompt("Would you like to defeat the machines again?(type y for yes)")
     repeat = gets.chomp.downcase
     break unless repeat.start_with?('y')
-    score = [0,0]
+    score = [0, 0]
   elsif score[1] == 5
     prompt("You were defeated by the computer! You suck")
     prompt("How about you try again and do us humans proud?(type y for yes)")
     repeat = gets.chomp.downcase
     break unless repeat.start_with?('y')
-    score = [0,0]
+    score = [0, 0]
   end
 
   prompt("---------------------")
