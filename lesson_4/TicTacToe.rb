@@ -49,7 +49,7 @@ def empty_squares(brd)
   brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
-def player_turn(brd)
+def player_turn!(brd)
   choice = ''
   loop do
     prompt "Pick a square #{joinor(empty_squares(brd), ', ')}"
@@ -61,8 +61,26 @@ def player_turn(brd)
   brd[choice] = PLAYER_MARKER
 end
 
-def computer_turn(brd)
-  comp_choice = empty_squares(brd).sample
+def find_at_risk_squares(line, brd)
+  if brd.values_at(*line).count(PLAYER_MARKER) == 2
+    binding.pry
+    brd.select{ |k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+  else
+    nil
+  end
+end
+
+def computer_turn!(brd)
+  comp_choice = nil
+  WINNING_LINES.each do |line|
+    comp_choice = find_at_risk_squares(line, brd)
+    break if comp_choice
+  end
+
+  if !comp_choice
+    comp_choice = empty_squares(brd).sample
+  end
+
   brd[comp_choice] = COMPUTER_MARKER
 end
 
@@ -100,10 +118,10 @@ loop do
   loop do
     display_board(board, score_arr)
 
-    player_turn(board)
+    player_turn!(board)
     break if winner?(board) || board_full?(board)
 
-    computer_turn(board)
+    computer_turn!(board)
     break if winner?(board) || board_full?(board)
   end
 
