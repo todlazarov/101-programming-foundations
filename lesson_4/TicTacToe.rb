@@ -1,5 +1,3 @@
-# Draw.io used for flowchart
-require 'pry'
 # Constants
 INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
@@ -12,7 +10,7 @@ end
 
 def display_board(brd)
   system "clear"
-  puts "You are playing #{PLAYER_MARKER}, the computer is #{COMPUTER_MARKER}"
+  puts "You are #{PLAYER_MARKER}, the computer is #{COMPUTER_MARKER}"
   puts ""
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
@@ -28,81 +26,87 @@ def display_board(brd)
   puts ""
 end
 
-def initialize_new_board
-  new_board = {}
-  (1..9).each { |num| new_board[num] = INITIAL_MARKER }
-  new_board
+def initialize_game
+  board = {}
+  (1..9).each { |num| board[num] = INITIAL_MARKER }
+  board
 end
 
-def empty_square(brd)
-  brd.keys.select {|num| brd[num] == INITIAL_MARKER}
+def empty_squares(brd)
+  brd.keys.select { |num| brd[num] == INITIAL_MARKER }
 end
 
-def player_select_tile!(brd)
-  square = ''
+def player_turn(brd)
+  choice = ''
   loop do
-    prompt "Choose a tile (#{empty_square(brd).join(', ')}):"
-    square = gets.chomp.to_i
-    break if empty_square(brd).include?(square)
-    prompt "That is not a valid choice."
+    prompt "Pick a square (#{empty_squares(brd).join(', ')}):"
+    choice = gets.chomp.to_i
+    break if empty_squares(brd).include?(choice)
+    prompt "This is not a valid choice."
   end
 
-  brd[square] = PLAYER_MARKER
+  brd[choice] = PLAYER_MARKER
 end
 
-def computer_select_tile!(brd)
-  computer = empty_square(brd).sample
-  brd[computer] = COMPUTER_MARKER
+def computer_turn(brd)
+  comp_choice = empty_squares(brd).sample
+  brd[comp_choice] = COMPUTER_MARKER
 end
 
 def board_full?(brd)
-  empty_square(brd).empty?
+  empty_squares(brd).empty?
 end
 
-def winner?(brd)
-  !!detect_winner(brd)
-end
-
-def detect_winner(brd)
+def who_wins?(brd)
   winning_lines = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # columns
                   [[1, 5, 9], [3, 5, 7]]              # diagonals
-  winning_lines.each do |lines|
-    if brd[lines[0]] == PLAYER_MARKER &&
-       brd[lines[1]] == PLAYER_MARKER &&
-       brd[lines[2]] == PLAYER_MARKER
-       return "Player"
-    elsif brd[lines[0]] == COMPUTER_MARKER &&
-       brd[lines[1]] == COMPUTER_MARKER &&
-       brd[lines[2]] == COMPUTER_MARKER
-       return "Computer"
+
+  winning_lines.each do |line|
+    if brd[line[0]] == PLAYER_MARKER &&
+       brd[line[1]] == PLAYER_MARKER &&
+       brd[line[2]] == PLAYER_MARKER
+      return "Player"
+    elsif brd[line[0]] == COMPUTER_MARKER &&
+          brd[line[1]] == COMPUTER_MARKER &&
+          brd[line[2]] == COMPUTER_MARKER
+      return "Computer"
     end
   end
+
   nil
 end
 
+def winner?(brd)
+  !!who_wins?(brd)
+end
+
+# Main logic
 loop do
-  board = initialize_new_board
+  board = initialize_game
 
   loop do
     display_board(board)
 
-    player_select_tile!(board)
-    break if board_full?(board) || winner?(board)
+    player_turn(board)
+    break if winner?(board) || board_full?(board)
+    computer_turn(board)
 
-    computer_select_tile!(board)
-    break if board_full?(board) || winner?(board)
+    break if winner?(board) || board_full?(board)
+    display_board(board)
   end
 
   display_board(board)
 
   if winner?(board)
-    prompt "#{detect_winner(board)} won!"
-  else 
+    prompt "#{who_wins?(board)} wins!"
+  else
     prompt "Its a tie!"
   end
 
-  prompt "Would you like to play again? (y or n)"
+  prompt "Would you like to play again?(y or n)"
   repeat = gets.chomp
   break unless repeat.downcase.start_with?('y')
 end
+
+prompt "Thank you for playing TicTacToe! Goodbye!"
