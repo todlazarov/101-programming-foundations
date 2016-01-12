@@ -61,9 +61,8 @@ def player_turn!(brd)
   brd[choice] = PLAYER_MARKER
 end
 
-def find_at_risk_squares(line, brd)
-  if brd.values_at(*line).count(PLAYER_MARKER) == 2
-    binding.pry
+def find_at_risk_squares(line, brd, marker)
+  if brd.values_at(*line).count(marker) == 2
     brd.select{ |k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
   else
     nil
@@ -72,9 +71,23 @@ end
 
 def computer_turn!(brd)
   comp_choice = nil
+
   WINNING_LINES.each do |line|
-    comp_choice = find_at_risk_squares(line, brd)
+    comp_choice = find_at_risk_squares(line, brd, COMPUTER_MARKER)
     break if comp_choice
+  end
+
+  if !comp_choice
+    WINNING_LINES.each do |line|
+      comp_choice = find_at_risk_squares(line, brd, PLAYER_MARKER)
+      break if comp_choice
+    end
+  end
+
+  if !comp_choice
+    if brd[5] == ' '
+      comp_choice = 5
+    end
   end
 
   if !comp_choice
@@ -124,6 +137,7 @@ loop do
     computer_turn!(board)
     break if winner?(board) || board_full?(board)
   end
+  display_board(board, score_arr)
 
   if winner?(board)
     prompt "#{who_wins?(board)} wins!"
@@ -133,7 +147,7 @@ loop do
   sleep(2)
   score(who_wins?(board), score_arr)
 
-  display_board(board, score_arr)
+  # display_board(board, score_arr)
   break if score_arr[0] == 5 or score_arr[1] == 5
 end
 
