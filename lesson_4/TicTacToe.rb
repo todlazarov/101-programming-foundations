@@ -126,18 +126,27 @@ def score(winner, arr)
   end
 end
 
+def turn_message(num)
+  if num == 0
+    prompt "Player goes first"
+  elsif num == 1
+    prompt "Computer goes first"
+  end
+end
+
 # Main logic
 loop do
   prompt "Welcome to our TicTacToe game!"
 
-  prompt "Who goes first?(0 for player, 1 for computer)"
-  first = gets.chomp.to_i
-
-  if first == 0
-    prompt "Player goes first"
-  elsif first == 1
-    prompt "Computer goes first"
+  loop do
+    prompt "Who goes first?(0 for player, 1 for computer)"
+    first = gets.chomp
+    break if first == '0' || first == '1'
+    prompt "This is not a valid answer"
   end
+  first = first.to_i
+
+  turn_message(first)
   sleep(1)
 
   loop do
