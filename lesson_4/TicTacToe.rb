@@ -1,5 +1,6 @@
 require 'pry'
 
+# Constants
 INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
@@ -9,6 +10,7 @@ WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
 
 # Variables
 score_arr = [0, 0]
+first = ''
 
 # Methods
 def prompt(msg)
@@ -126,29 +128,58 @@ end
 
 # Main logic
 loop do
-  board = initialize_game
+  prompt "Welcome to our TicTacToe game!"
+
+  prompt "Who goes first?(0 for player, 1 for computer)"
+  first = gets.chomp.to_i
+
+  if first == 0
+    prompt "Player goes first"
+  elsif first == 1
+    prompt "Computer goes first"
+  end
+  sleep(1)
 
   loop do
+    board = initialize_game
+
+    loop do
+      display_board(board, score_arr)
+
+      if first == 0
+        player_turn!(board)
+        break if winner?(board) || board_full?(board)
+
+        computer_turn!(board)
+        break if winner?(board) || board_full?(board)
+      elsif first == 1
+        computer_turn!(board)
+        break if winner?(board) || board_full?(board)
+        display_board(board, score_arr)
+
+        player_turn!(board)
+        break if winner?(board) || board_full?(board)
+      end
+
+    end
     display_board(board, score_arr)
 
-    player_turn!(board)
-    break if winner?(board) || board_full?(board)
+    if winner?(board)
+      prompt "#{who_wins?(board)} wins!"
+    else
+      prompt "Its a tie!"
+    end
+    sleep(2)
+    score(who_wins?(board), score_arr)
 
-    computer_turn!(board)
-    break if winner?(board) || board_full?(board)
+    break if score_arr[0] == 5 or score_arr[1] == 5
+    first = 1 - first
   end
-  display_board(board, score_arr)
 
-  if winner?(board)
-    prompt "#{who_wins?(board)} wins!"
-  else
-    prompt "Its a tie!"
-  end
-  sleep(2)
-  score(who_wins?(board), score_arr)
-
-  # display_board(board, score_arr)
-  break if score_arr[0] == 5 or score_arr[1] == 5
+  prompt "Would you like to play another game?(y for Yes)"
+  repeat = gets.chomp
+  break unless repeat.downcase.start_with?('y')
+  score_arr = [0, 0]
 end
 
 prompt "Thank you for playing TicTacToe! Goodbye!"
