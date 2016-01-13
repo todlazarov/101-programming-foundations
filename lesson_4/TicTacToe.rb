@@ -65,7 +65,7 @@ end
 
 def find_at_risk_squares(line, brd, marker)
   if brd.values_at(*line).count(marker) == 2
-    brd.select{ |k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+    brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
   else
     nil
   end
@@ -169,7 +169,6 @@ loop do
         player_turn!(board)
         break if winner?(board) || board_full?(board)
       end
-
     end
     display_board(board, score_arr)
 
@@ -181,7 +180,7 @@ loop do
     sleep(2)
     score(who_wins?(board), score_arr)
 
-    break if score_arr[0] == 5 or score_arr[1] == 5
+    break if score_arr[0] == 5 || score_arr[1] == 5
     first = 1 - first
   end
 
