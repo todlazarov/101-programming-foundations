@@ -88,7 +88,7 @@ loop do
   player_cards = []
   dealer_cards = []
 
-  # Draw cardsgit 
+  # Draw cards
   2.times do
     player_cards << deck.pop
     dealer_cards << deck.pop
